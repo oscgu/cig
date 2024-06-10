@@ -1,0 +1,5 @@
+cig
+.cache
+compile_commands.json
+*.o
+config.h

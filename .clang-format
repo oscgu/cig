@@ -1,0 +1,42 @@
+AlignConsecutiveMacros: AcrossEmptyLines
+AlignEscapedNewlines: Right
+AlignOperands: AlignAfterOperator
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: TopLevel
+AlwaysBreakBeforeMultilineStrings: false
+BraceWrapping:
+    AfterFunction: true
+    AfterStruct: false
+    AfterUnion: false
+    BeforeElse: false
+    BeforeWhile: false
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: true
+BreakStringLiterals: true
+ColumnLimit: 79
+IncludeBlocks: Preserve
+IndentCaseBlocks: true
+IndentCaseLabels: false
+IndentWidth: 8
+MaxEmptyLinesToKeep: 1
+PointerAlignment: Right
+ReferenceAlignment: Right
+SortIncludes: Never
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyParentheses: false
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: true
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+TabWidth: 8
