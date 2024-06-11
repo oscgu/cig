@@ -5,6 +5,7 @@
 #define PURPLE "\033[35m"
 #define RED    "\033[31m"
 #define RESET  "\033[0m"
+#define YELLOW "\033[93m"
 
 typedef struct {
         char *name;
@@ -15,7 +16,7 @@ typedef struct {
  * taken from
  * https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
  */
-command commands[] = {
+static command commands[] = {
     {"feat", "new feature for the user, not a new feature for build script"},
     {"fix", "bug fix for the user, not a fix to a build script"},
     {"docs", "changes to the documentation"},
@@ -30,4 +31,4 @@ command commands[] = {
 /*
  * Format used to print completion suggestions when tabbing
  */
-char *match_fmt = "\t" PURPLE "%s" RESET " - %s\n";
+static char *match_fmt = "\t" PURPLE "%s" RESET " - %s\n";
