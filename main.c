@@ -17,6 +17,7 @@ static void get_commit_summary(char *summary, int n);
 static void gen_commit_msg(char *commit, int n, const char *title,
                            const char *summary);
 static void create_commit(const char *msg);
+static void trim_trailing_whitespace(char *s, int end);
 
 /* variables */
 
@@ -206,8 +207,8 @@ get_commit_title(char *title, int n)
                 i++;
         }
         free(commit_type);
-        title[i] = ' ';
-        title[--i] = ':';
+
+        trim_trailing_whitespace(title, i);
 
         puts(GRAY "The title of your commit:" RESET);
         fputs(title, stdout);
@@ -215,6 +216,18 @@ get_commit_title(char *title, int n)
         strncat(title, buf, (n - len - 1));
 
         return 1;
+}
+
+static void
+trim_trailing_whitespace(char *s, int len)
+{
+
+        while (s[len - 1] == ' ') {
+                len--;
+        }
+        s[len] = ':';
+        s[++len] = ' ';
+        s[++len] = '\0';
 }
 
 static void
