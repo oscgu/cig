@@ -1,5 +1,6 @@
 #include "config.h"
 #include "git2.h"
+#include <git2/oid.h>
 #include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -58,6 +59,7 @@ create_commit(const char *msg)
 
         int error, changes = 0;
         unsigned int i;
+        char commithash[GIT_OID_SHA1_HEXSIZE + 1];
 
         git_oid commit_oid, tree_oid;
         git_tree *tree;
@@ -105,7 +107,8 @@ create_commit(const char *msg)
                                       NULL, msg, tree, parent ? 1 : 0,
                                       parent));
 
-        printf(GREEN "Changes committed: %s\n" RESET, commit_oid.id);
+        git_oid_tostr(commithash, sizeof(commithash), &commit_oid);
+        printf(GREEN "Changes committed: %s\n" RESET, commithash);
 
         git_index_free(index);
         git_signature_free(sig);
