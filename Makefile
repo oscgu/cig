@@ -1,6 +1,7 @@
 # cig
 
 VERSION  = 0.0.1
+DEST     = /usr/local/bin
 CC       = clang
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE
 CFLAGS   = -Wall -Wextra -pedantic -Os ${CPPFLAGS}
@@ -27,4 +28,9 @@ clean:
 demo:
 	vhs ./demo.tape
 
-.PHONY: all clean
+install: all
+	mkdir -p ${DEST}
+	cp -f cig ${DEST}/cig
+	chmod 755 ${DEST}/cig
+
+.PHONY: all clean install
