@@ -45,7 +45,6 @@ main(void)
 
         gen_commit_msg(commit, sizeof(commit), title, summary);
         create_commit(commit);
-        puts(GREEN "Changes committed!" RESET);
 
         return EXIT_SUCCESS;
 }
@@ -107,6 +106,8 @@ create_commit(const char *msg)
         check_lg2(git_commit_create_v(&commit_oid, repo, "HEAD", sig, sig,
                                       NULL, msg, tree, parent ? 1 : 0,
                                       parent));
+
+        printf(GREEN "Changes committed: %s\n" RESET, commit_oid.id);
 
         git_index_free(index);
         git_signature_free(sig);
