@@ -2,6 +2,8 @@
 
 Conventional commits cli, written in `C`
 
+![demo](./assets/demo.gif)
+
 ## Dependencies
 
 - readline

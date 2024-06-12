@@ -24,4 +24,7 @@ cig: ${OBJ}
 clean:
 	rm -f cig ${OBJ}
 
+demo:
+	vhs ./demo.tape
+
 .PHONY: all clean
