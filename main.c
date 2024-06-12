@@ -69,9 +69,7 @@ create_commit(const char *msg)
         git_buf *out = NULL;
         git_repository *repo = NULL;
 
-        check_lg2(git_repository_open_ext(
-            &repo, ".", GIT_REPOSITORY_OPEN_NO_SEARCH, NULL));
-
+        check_lg2(git_repository_open_ext(&repo, ".", 0, NULL));
         check_lg2(git_status_list_new(&status, repo, NULL));
 
         for (i = 0; i < git_status_list_entrycount(status); i++) {
