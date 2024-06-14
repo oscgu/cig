@@ -18,12 +18,18 @@ Ubuntu install:
 sudo apt-get install libgit2-dev libreadline-dev
 ```
 
-## Build
-
-`make`
-
 ## Configure
 
 Edit [config.def.h](./config.def.h)
 
 Running `make` will copy the file to `config.h`
+
+## Build
+
+`make`
+
+## Install
+
+```bash
+sudo make install
+```
