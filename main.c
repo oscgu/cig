@@ -1,10 +1,8 @@
 #include "config.h"
 #include "git2.h"
-#include <git2/oid.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <readline/readline.h>
-#include <stdlib.h>
-#include <string.h>
 
 /* function prototypes */
 
@@ -19,6 +17,7 @@ static void gen_commit_msg(char *commit, int n, const char *title,
                            const char *summary);
 static void create_commit(const char *msg);
 static void trim_trailing_whitespace(char *s, int end);
+static void die(const char *fmt, ...);
 
 /* variables */
 
@@ -39,15 +38,12 @@ main(void)
         get_commit_title(title, sizeof(title));
         get_commit_summary(summary, sizeof(summary));
 
-        if (!confirm()) {
-                puts(RED "aborted" RESET);
-                return EXIT_FAILURE;
-        }
+        if (!confirm()) die(RED "aborted!" RESET);
 
         gen_commit_msg(commit, sizeof(commit), title, summary);
         create_commit(commit);
 
-        return EXIT_SUCCESS;
+        return 0;
 }
 
 /* function implementations */
@@ -82,10 +78,7 @@ create_commit(const char *msg)
                 }
         }
 
-        if (!changes) {
-                puts(YELLOW "Nothing to commit!" RESET);
-                exit(EXIT_FAILURE);
-        }
+        if (!changes) die(YELLOW "Nothing to commit!" RESET);
 
         if ((error = git_revparse_ext(&parent, &ref, repo, "HEAD")) < 0) {
                 if (error == GIT_ENOTFOUND) {
@@ -250,8 +243,19 @@ check_lg2(int error)
 {
         if (error < 0) {
                 const git_error *e = git_error_last();
-                printf(RED "Error: %d/%d: %s\n" RESET, error, e->klass,
-                       e->message);
-                exit(EXIT_FAILURE);
+                die(RED "Error: %d/%d: %s\n" RESET, error, e->klass,
+                    e->message);
         }
+}
+
+static void
+die(const char *fmt, ...)
+{
+        va_list ap;
+
+        va_start(ap, fmt);
+        vfprintf(stderr, fmt, ap);
+        va_end(ap);
+
+        exit(1);
 }
