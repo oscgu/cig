@@ -18,6 +18,11 @@ Ubuntu install:
 sudo apt-get install libgit2-dev libreadline-dev
 ```
 
+Apply the ubuntu patch, because libgit2-dev appears to be an old version:
+```bash
+patch < ./ubuntu.patch
+```
+
 ## Configure
 
 Edit [config.def.h](./config.def.h)

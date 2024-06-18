@@ -1,0 +1,13 @@
+diff --git a/main.c b/main.c
+index afdae0f..3b598c7 100644
+--- a/main.c
++++ b/main.c
+@@ -55,7 +55,7 @@ create_commit(const char *msg)
+ 
+         int error, changes = 0;
+         unsigned int i;
+-        char commithash[GIT_OID_SHA1_HEXSIZE + 1];
++        char commithash[GIT_OID_HEXSZ + 1];
+ 
+         git_oid commit_oid, tree_oid;
+         git_tree *tree;

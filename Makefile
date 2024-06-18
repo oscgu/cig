@@ -2,7 +2,7 @@
 
 VERSION  = 0.0.1
 DEST     = /usr/local/bin
-CC       = clang
+CC       = cc
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE
 CFLAGS   = -Wall -Wextra -pedantic -Os ${CPPFLAGS}
 LIBS     = -lgit2 -lreadline
