@@ -9,11 +9,11 @@ Conventional commits cli, written in `C`
 - readline
 - libgit2
 
-Arch install:
+### Arch install:
 ```bash
 sudo pacman -S libgit2 readline
 ```
-Ubuntu install:
+### Ubuntu install:
 ```bash
 sudo apt-get install libgit2-dev libreadline-dev
 ```
