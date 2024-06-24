@@ -4,7 +4,7 @@ VERSION  = 0.0.1
 DEST     = /usr/local/bin
 CC       = cc
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE
-CFLAGS   = -Wall -Wextra -pedantic -Os ${CPPFLAGS}
+CFLAGS   = -Wall -Wextra -pedantic -Os ${CPPFLAGS} -std=c99
 LIBS     = -lgit2 -lreadline
 SRC      = main.c
 OBJ      = ${SRC:.c=.o}
