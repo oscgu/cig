@@ -9,11 +9,11 @@
 static char **commit_type_completion(const char *text, int start, int end);
 static char *match_gen(const char *text, int state);
 static int confirm(void);
-static int get_commit_title(char *title, int n);
+static int get_commit_title(char *title, size_t n);
 static void display_matches(char **matches, int num_matches, int max_length);
 static void check_lg2(int error);
-static void get_commit_summary(char *summary, int n);
-static void gen_commit_msg(char *commit, int n, const char *title,
+static void get_commit_summary(char *summary, size_t n);
+static void gen_commit_msg(char *commit, size_t n, const char *title,
                            const char *summary);
 static void create_commit(const char *msg);
 static void trim_trailing_whitespace(char *s, int end);
@@ -31,7 +31,7 @@ main(void)
 {
         char title[72];
         char summary[500];
-        char commit[sizeof(title) + sizeof(summary)];
+        char commit[sizeof(title) + sizeof(summary) + 1];
 
         rl_attempted_completion_function = commit_type_completion;
 
@@ -184,12 +184,12 @@ confirm(void)
 }
 
 static int
-get_commit_title(char *title, int n)
+get_commit_title(char *title, size_t n)
 {
-        int len = strlen(title);
-        char buf[n - len];
+        char buf[n];
         char *commit_type;
         int i = 0;
+        int tlen = 0;
 
         commit_type = readline("Type of change: ");
         if (!commit_type) {
@@ -202,13 +202,14 @@ get_commit_title(char *title, int n)
                 i++;
         }
         free(commit_type);
-
         trim_trailing_whitespace(title, i);
+
+        tlen = strlen(title);
 
         puts(GRAY "The title of your commit:" RESET);
         fputs(title, stdout);
-        fgets(buf, (n - len), stdin);
-        strncat(title, buf, (n - len - 1));
+        fgets(buf, (n - tlen), stdin);
+        strncat(title, buf, (n - tlen - 1));
 
         return 1;
 }
@@ -226,14 +227,14 @@ trim_trailing_whitespace(char *s, int len)
 }
 
 static void
-get_commit_summary(char *summary, int n)
+get_commit_summary(char *summary, size_t n)
 {
         puts(GRAY "Describe your changes:" RESET);
         fgets(summary, n, stdin);
 }
 
 static void
-gen_commit_msg(char *commit, int n, const char *title, const char *summary)
+gen_commit_msg(char *commit, size_t n, const char *title, const char *summary)
 {
         snprintf(commit, n, "%s\n%s\n", title, summary);
 }
