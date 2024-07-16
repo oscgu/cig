@@ -64,7 +64,6 @@ create_commit(const char *msg)
         git_status_list *status = NULL;
         git_object *parent = NULL;
         git_reference *ref = NULL;
-        git_buf *out = NULL;
         git_repository *repo = NULL;
 
         check_lg2(git_repository_open_ext(&repo, ".", 0, NULL));
@@ -95,7 +94,6 @@ create_commit(const char *msg)
         check_lg2(git_tree_lookup(&tree, repo, &tree_oid));
         check_lg2(git_signature_default(&sig, repo));
 
-        git_message_prettify(out, msg, 0, 0);
         check_lg2(git_commit_create_v(&commit_oid, repo, "HEAD", sig, sig,
                                       NULL, msg, tree, parent ? 1 : 0,
                                       parent));
@@ -108,7 +106,6 @@ create_commit(const char *msg)
         git_tree_free(tree);
         git_object_free(parent);
         git_reference_free(ref);
-        git_buf_dispose(out);
 
         git_libgit2_shutdown();
 }
