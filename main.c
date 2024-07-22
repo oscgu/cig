@@ -5,22 +5,17 @@
 #include <readline/readline.h>
 
 /* function prototypes */
-
 static char **commit_type_completion(const char *text, int start, int end);
 static char *match_gen(const char *text, int state);
 static int confirm(void);
 static int get_commit_title(char *title, size_t n);
 static void display_matches(char **matches, int num_matches, int max_length);
 static void check_lg2(int error);
-static void get_commit_summary(char *summary, size_t n);
-static void gen_commit_msg(char *commit, size_t n, const char *title,
-                           const char *summary);
 static void create_commit(const char *msg);
 static void trim_trailing_whitespace(char *s, int end);
 static void die(const char *fmt, ...);
 
 /* variables */
-
 static unsigned int staged_mask =
     GIT_STATUS_INDEX_NEW | GIT_STATUS_INDEX_MODIFIED |
     GIT_STATUS_INDEX_DELETED | GIT_STATUS_INDEX_RENAMED |
@@ -30,24 +25,27 @@ int
 main(void)
 {
         char title[72];
-        char summary[500];
+        char *summary;
         char commit[sizeof(title) + sizeof(summary) + 1];
 
         rl_attempted_completion_function = commit_type_completion;
 
         get_commit_title(title, sizeof(title));
-        get_commit_summary(summary, sizeof(summary));
 
-        if (!confirm()) die(RED "aborted!" RESET);
+        if (!(summary = readline(GRAY "Describe your changes:" RESET "\n")))
+                die("could not get summary");
 
-        gen_commit_msg(commit, sizeof(commit), title, summary);
+        if (!confirm()) die(RED "aborted!" RESET "\n");
+
+        snprintf(commit, sizeof(commit), "%s\n%s\n", title, summary);
         create_commit(commit);
+
+        free(summary);
 
         return 0;
 }
 
 /* function implementations */
-
 static void
 create_commit(const char *msg)
 {
@@ -183,16 +181,14 @@ confirm(void)
 static int
 get_commit_title(char *title, size_t n)
 {
-        char buf[n];
         char *commit_type;
         int i = 0;
         int tlen = 0;
+        char *out;
 
-        commit_type = readline("Type of change: ");
-        if (!commit_type) {
-                puts("could not read type");
-                return -1;
-        }
+        if (!(commit_type = readline("Type of change: ")))
+                die("could not read type");
+        rl_bind_key('\t', rl_insert); // no more tab completion
 
         while (commit_type[i] != '\0') {
                 title[i] = commit_type[i];
@@ -203,10 +199,12 @@ get_commit_title(char *title, size_t n)
 
         tlen = strlen(title);
 
-        puts(GRAY "The title of your commit:" RESET);
-        fputs(title, stdout);
-        fgets(buf, (n - tlen), stdin);
-        strncat(title, buf, (n - tlen - 1));
+        puts(GRAY "The title of your commit: " RESET);
+
+        if (!(out = readline(title))) die("could not read title");
+
+        strncat(title, out, (n - tlen - 1));
+        free(out);
 
         return 1;
 }
@@ -221,19 +219,6 @@ trim_trailing_whitespace(char *s, int len)
         s[len] = ':';
         s[++len] = ' ';
         s[++len] = '\0';
-}
-
-static void
-get_commit_summary(char *summary, size_t n)
-{
-        puts(GRAY "Describe your changes:" RESET);
-        fgets(summary, n, stdin);
-}
-
-static void
-gen_commit_msg(char *commit, size_t n, const char *title, const char *summary)
-{
-        snprintf(commit, n, "%s\n%s\n", title, summary);
 }
 
 static void
